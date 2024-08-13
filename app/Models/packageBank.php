@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class packageBank extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+    protected $fillable = [
+        'bankname',
+        'bankaccountname',
+        'bankaccountnumber',
+        'logo'
+    ];
 }
