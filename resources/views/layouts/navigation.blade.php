@@ -17,6 +17,16 @@
                     </x-nav-link>
                 </div>
 
+                @role('customer')
+                {{-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('dashboard.bookings')" :active="request()->routeIs('dashboard.bookings')">
+                        {{ __('My Bookings') }}
+                    </x-nav-link>
+                </div> --}}
+                @endrole
+
+                @role('super_admin')
+
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.index')">
                         {{ __('Categories') }}
@@ -31,9 +41,17 @@
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('admin.package_tours.index')" :active="request()->routeIs('admin.package_tours.index')">
-                        {{ __('Tours') }}
+                        {{ __('Package Tours') }}
                     </x-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('admin.package_bookings.index')" :active="request()->routeIs('admin.package_bookings.index')">
+                        {{ __('Package Bookings') }}
+                    </x-nav-link>
+                </div>
+                @endrole
+
             </div>
 
             <!-- Settings Dropdown -->
