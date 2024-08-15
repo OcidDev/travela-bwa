@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use pagination;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -12,7 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::orderByDesc('id')->paginate('10');
+        return view('categories.index', compact('categories'));
     }
 
     /**
@@ -20,7 +24,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('categories.create');
     }
 
     /**
@@ -28,7 +32,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'icon' => 'required|image|mimes:png,jpg,jpeg,webp|max:2048',
+        ]);
+        // Upload image
+        $data['icon'] = $request->file('icon')->store('icons','public');
+        $data['slug'] = Str::slug($request->name);
+
+        Category::create($data);
+        return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
     }
 
     /**
