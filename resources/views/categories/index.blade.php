@@ -44,12 +44,12 @@
                                 </td>
                                 <td class="table-cell">{{ $category->name }}</td>
                                 <td class="table-cell">
+                                    <a href="{{ route('admin.categories.edit',$category->id) }}" class="px-4 py-2 rounded-lg bg-blue-800 text-white">Edit</a>
                                     {{-- form delete --}}
                                     <form action="{{ route('admin.categories.destroy',$category->id) }}" method="POST" class="inline">
-                                        <a href="{{ route('admin.categories.edit',$category->id) }}" class="px-4 py-2 rounded-lg bg-blue-800 text-white">Edit</a>
                                         @csrf
                                         @method('DELETE')
-                                        <a type="submit" class="px-4 py-2 rounded-lg bg-red-800 text-white">Delete</a>
+                                        <button type="submit" class="px-4 py-2 rounded-lg bg-red-800 text-white">Delete</button>
                                     </form>
                                 </td>
                             </tr>

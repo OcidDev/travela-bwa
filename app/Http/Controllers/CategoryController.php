@@ -57,7 +57,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        $data = Category::find($category->id);
+        return view('categories.edit', compact('data'));
     }
 
     /**
@@ -65,7 +66,22 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'icon' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048',
+        ]);
+
+        if($request->hasFile('icon')){
+            // Delete old image
+            Storage::disk('public')->delete($category->icon);
+            // Upload new image
+            $data['icon'] = $request->file('icon')->store('icons','public');
+        }
+
+        $data['slug'] = Str::slug($request->name);
+
+        $category->update($data);
+        return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully.');
     }
 
     /**
@@ -73,6 +89,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        // Delete image
+        Storage::disk('public')->delete($category->icon);
+
+        $category->delete();
+        return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully.');
     }
 }
