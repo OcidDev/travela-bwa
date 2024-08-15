@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\packageBank;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PackageBankController extends Controller
 {
@@ -12,7 +13,8 @@ class PackageBankController extends Controller
      */
     public function index()
     {
-        //
+        $data = packageBank::all();
+        return view('banks.index', compact('data'));
     }
 
     /**
@@ -20,7 +22,7 @@ class PackageBankController extends Controller
      */
     public function create()
     {
-        //
+        return view('banks.create');
     }
 
     /**
@@ -28,7 +30,17 @@ class PackageBankController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'bankname' => 'required|string',
+            'bankaccountnumber' => 'required|numeric',
+            'bankaccountname' => 'required|string',
+            'logo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+        // store image
+        $data['logo'] = $request->file('logo')->store('logo','public');
+        packageBank::create($data);
+        alert()->success('Success', 'Bank created successfully.');
+        return redirect()->route('admin.package_banks.index');
     }
 
     /**
@@ -44,7 +56,8 @@ class PackageBankController extends Controller
      */
     public function edit(packageBank $packageBank)
     {
-        //
+        $data = packageBank::find($packageBank->id);
+        return view('banks.edit', compact('data'));
     }
 
     /**
@@ -52,7 +65,21 @@ class PackageBankController extends Controller
      */
     public function update(Request $request, packageBank $packageBank)
     {
-        //
+        $data = $request->validate([
+            'bankname' => 'required|string',
+            'bankaccountnumber' => 'required|numeric',
+            'bankaccountname' => 'required|string',
+            'logo' => 'image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+        if($request->hasFile('logo')){
+            // delete old image
+            Storage::delete('public/'.$packageBank->logo);
+            // store image
+            $data['logo'] = $request->file('logo')->store('logo','public');
+        }
+        packageBank::where('id', $packageBank->id)->update($data);
+        alert()->success('Success', 'Bank updated successfully.');
+        return redirect()->route('admin.package_banks.index');
     }
 
     /**
@@ -60,6 +87,10 @@ class PackageBankController extends Controller
      */
     public function destroy(packageBank $packageBank)
     {
-        //
+        // delete image
+        Storage::delete('public/'.$packageBank->logo);
+        packageBank::destroy($packageBank->id);
+        alert()->success('Success', 'Bank deleted successfully.');
+        return redirect()->route('admin.package_banks.index');
     }
 }
