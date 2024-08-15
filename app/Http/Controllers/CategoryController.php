@@ -7,6 +7,9 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use RealRashid\SweetAlert\Facades\Alert;
+
+
 
 class CategoryController extends Controller
 {
@@ -41,7 +44,8 @@ class CategoryController extends Controller
         $data['slug'] = Str::slug($request->name);
 
         Category::create($data);
-        return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
+        alert()->success('Success', 'Category created successfully.',);
+        return redirect()->route('admin.categories.index');
     }
 
     /**
@@ -81,6 +85,7 @@ class CategoryController extends Controller
         $data['slug'] = Str::slug($request->name);
 
         $category->update($data);
+        alert()->success('Success', 'Category edited successfully.',);
         return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully.');
     }
 
@@ -89,10 +94,13 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        // konfirmasi delete
+
         // Delete image
         Storage::disk('public')->delete($category->icon);
 
         $category->delete();
+        alert()->success('Success', 'Category deleted successfully.',);
         return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully.');
     }
 }
