@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('package_photos', function (Blueprint $table) {
             $table->id();
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->foreignId('packagetoursfk')->references('id')->on('package_tours')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();

@@ -57,7 +57,7 @@
                         @empty
                         <tbody class="table-row-group">
                             <tr class="table-row">
-                                <td class="table-cell text-center" colspan="4">No data</td>
+                                <td class="table-cell text-center" colspan="3">No data</td>
                             </tr>
                         </tbody>
                         @endforelse
