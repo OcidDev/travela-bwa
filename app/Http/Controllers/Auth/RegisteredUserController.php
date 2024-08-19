@@ -29,6 +29,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // dd($request->all());
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
@@ -37,6 +38,7 @@ class RegisteredUserController extends Controller
             'avatar' => ['required', 'image', 'mimes:jpeg,png,jpg'],
         ]);
 
+        // dd($request->valodate());
         // jika avatar di input
         if ($request->hasFile('avatar')) {
             $avatarPath = $request->file('avatar')->store('avatars', 'public');
@@ -49,7 +51,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
+        dd($user);
         $user->assignRole('customer');
 
         event(new Registered($user));
