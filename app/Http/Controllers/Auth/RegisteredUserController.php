@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Alert;
 
 class RegisteredUserController extends Controller
 {
@@ -51,13 +52,13 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        dd($user);
+        // dd($user);
         $user->assignRole('customer');
 
         event(new Registered($user));
 
         Auth::login($user);
-
+        alert()->success('Success', 'Registered successfully.');
         return redirect(route('dashboard', absolute: false));
     }
 }
