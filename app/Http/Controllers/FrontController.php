@@ -18,8 +18,37 @@ class FrontController extends Controller
         $tours = PackageTour::orderByDesc('id')->paginate('10');
         return view('frontend.index', compact('categories', 'tours'));
     }
-    public function book(PackageTour $packageTour)
+
+    public function categories(Category $categories)
     {
-        // return view('front.book', compact('packageTour'));
+        $categories = Category::orderByDesc('id')->paginate('10');
+        // return view('frontend.categories', compact('categories'));
+    }
+
+    public function details(PackageTour $packageTour)
+    {
+        return view('frontend.details', compact('packageTour'));
+    }
+
+    public function booking(PackageTour $packageTour)
+    {
+        // dd($packageTour->price);
+        return view('frontend.book', compact('packageTour'));
+    }
+    public function book_store(Request $request, PackageTour $packageTour)
+    {
+        $user = Auth::user()->id;
+        $bank = PackageBank::orderByDesc('id')->first();
+
+        $data = $request->validate([
+            'name' => 'required|string',
+            'phone' => 'required|string',
+            'email' => 'required|string',
+            'address' => 'required|string',
+            'total' => 'required|string',
+            'package_toursfk' => 'required',
+            'usersfk' => 'required',
+        ]);
+        return view('frontend.checkout');
     }
 }
