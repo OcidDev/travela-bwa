@@ -11,7 +11,6 @@ use App\Http\Controllers\FrontController;
 Route::get('/', [FrontController::class, 'index'])->name('home');
 Route::get('/categories/{categories:slug}', [FrontController::class, 'categories'])->name('categories');
 Route::get('/details/{packageTour:slug}', [FrontController::class, 'details'])->name('details');
-Route::get('/booking/{packageTour:slug}', [FrontController::class, 'booking'])->name('booking');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -22,32 +21,33 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::middleware('can: checkout package')->group(function(){
-        Route::get('book/{packageTour:slug}', [FrontController::class, 'book'])->name('book');
-        Route::post('book/{packageTour:slug}', [FrontController::class, 'book_store'])->name('book.store');
+    Route::middleware('can:checkout package')->group(function(){
+    Route::get('/booking/{packageTour:slug}', [FrontController::class, 'booking'])->name('booking');
+    Route::get('book/{packageTour:slug}', [FrontController::class, 'book'])->name('book');
+    Route::post('book/{packageTour:slug}', [FrontController::class, 'book_store'])->name('book.store');
 
-        Route::get('book/choose-bank/{packageBooking}/', [FrontController::class, 'choose_bank'])->name('choose.bank');
-        Route::patch('book/choose-bank/{packageBooking}/save', [FrontController::class, 'choose_bank_store'])->name('choose.bank.store');
+    Route::get('book/choose-bank/{packageBooking}/', [FrontController::class, 'choose_bank'])->name('choose.bank');
+    Route::patch('book/choose-bank/{packageBooking}/save', [FrontController::class, 'choose_bank_store'])->name('choose.bank.store');
 
-        Route::get('book/payment/{packageBooking}/save', [FrontController::class, 'book_payment'])->name('book.payment');
-        Route::patch('book/payment/{packageBooking}/save', [FrontController::class, 'book_payment_store'])->name('book.payment.store');
+    Route::get('book/payment/{packageBooking}/save', [FrontController::class, 'book_payment'])->name('book.payment');
+    Route::patch('book/payment/{packageBooking}/save', [FrontController::class, 'book_payment_store'])->name('book.payment.store');
 
-        Route::patch('book-finish', [FrontController::class, 'book_finish'])->name('book.finish');
+    Route::patch('book-finish', [FrontController::class, 'book_finish'])->name('book.finish');
     });
     Route::prefix('admin')->name('admin.')->group(function(){
-        Route::middleware('can: manage categories')->group(function(){
+        Route::middleware('can:manage categories')->group(function(){
             Route::resource('categories', CategoryController::class);
         });
 
-        Route::middleware('can: manage packages')->group(function(){
+        Route::middleware('can:manage packages')->group(function(){
             Route::resource('package_tours', PackageTourController::class);
         });
 
-        Route::middleware('can: manage package banks')->group(function(){
+        Route::middleware('can:manage package banks')->group(function(){
             Route::resource('package_banks', PackageBankController::class);
         });
 
-        Route::middleware('can: manage transactions')->group(function(){
+        Route::middleware('can:manage transactions')->group(function(){
             Route::resource('package_bookings', PackageBookingController::class);
         });
     });

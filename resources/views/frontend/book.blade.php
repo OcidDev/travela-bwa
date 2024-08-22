@@ -15,12 +15,12 @@
           <p class="text-center m-auto font-semibold">Booking</p>
           <div class="w-12"></div>
         </nav>
-        <form action="{{ route('checkout',$packageTour->slug) }}" method="POST" class="flex flex-col gap-8">
+        <form action="{{ route('book',$packageTour->slug) }}" method="POST" class="flex flex-col gap-8">
             @csrf
           <div class="flex flex-col gap-3 px-4 ">
             <p class="font-semibold">Start Date</p>
             <div class="flex items-center gap-[10px] bg-white p-[16px_24px] rounded-[37px]  transition-all duration-300">
-              <input type="date" name="" id="" class="appearance-none outline-none w-full relative text-sm tracking-035 leading-[22px] [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:opacity-0">
+              <input type="date" name="startdate" id="startdate" class="appearance-none outline-none w-full relative text-sm tracking-035 leading-[22px] [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:opacity-0">
               <div class="w-6 h-6 flex shrink-0">
                 <img src="{{ asset('assets/icons/calendar-blue.svg') }}" class="w-full h-full" alt="icon">
               </div>
@@ -45,7 +45,7 @@
                 <button type="button" id="remove-quantity"><img src="{{ asset('assets/icons/minus-square.svg') }}" alt="icon"></button>
                 <p id="quantity" class="font-semibold text-sm">1</p>
                 <input type="hidden" name="quantity" id="quantity_input" value="1" />
-                <input type="hidden" name="packageTourPrice" id="packageTourPrice" value="{{ $packageTour->price }}" />
+                <input type="hidden" name="totalamount" id="packageTourPrice" value="{{ $packageTour->price }}" />
                 <button type="button" id="add-quantity"><img src="{{ asset('assets/icons/add-square.svg') }}" alt="icon"></button>
               </div>
             </div>

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\PackageBank;
 use App\Models\PackageTour;
 use Illuminate\Http\Request;
+use App\Models\PackageBooking;
 use Illuminate\Support\Facades\Auth;
 
 class FrontController extends Controller
@@ -37,18 +40,25 @@ class FrontController extends Controller
     }
     public function book_store(Request $request, PackageTour $packageTour)
     {
-        $user = Auth::user()->id;
-        $bank = PackageBank::orderByDesc('id')->first();
-
+        // dd($request->all());
         $data = $request->validate([
-            'name' => 'required|string',
-            'phone' => 'required|string',
-            'email' => 'required|string',
-            'address' => 'required|string',
-            'total' => 'required|string',
-            'package_toursfk' => 'required',
-            'usersfk' => 'required',
+            'startdate' => 'required|date',
+            'quantity' => 'required|numeric',
+            'totalamount' => 'required|numeric',
         ]);
-        return view('frontend.checkout');
+        // dd($packageTour->id);
+        $bank = PackageBank::first();
+        $data['packagetoursfk'] = $packageTour->id;
+        $data['usersfk'] = Auth::user()->id;
+        $data['packagebanksfk'] = $bank->id;
+        $data['proof'] = 0;
+        $data['ispaid'] = 0;
+        $data['insurance'] = 300000 * $data['quantity'];
+        $data['tax'] = $packageTour->price * 0.1 * $data['quantity'];
+        $data['subtotal'] = $packageTour->price * $data['quantity'];
+        $data['totalamount'] = $data['subtotal'] + $data['tax'] + $data['insurance'];
+        $data['startdate'] = new Carbon($request->startdate);
+        $data['enddate'] = $data['startdate']->addDays($packageTour->days);
+        PackageBooking::create($data);
     }
 }
