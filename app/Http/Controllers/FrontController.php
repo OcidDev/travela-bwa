@@ -59,6 +59,25 @@ class FrontController extends Controller
         $data['totalamount'] = $data['subtotal'] + $data['tax'] + $data['insurance'];
         $data['startdate'] = new Carbon($request->startdate);
         $data['enddate'] = $data['startdate']->addDays($packageTour->days);
-        PackageBooking::create($data);
+        $packageBooking = PackageBooking::create($data);
+        return redirect()->route('choose.bank', $packageBooking->id);
+    }
+    public function choose_bank(PackageBooking $packageBooking)
+    {
+        $banks = PackageBank::all();
+        return view('frontend.choosebank', compact('banks', 'packageBooking'));
+
+    }
+
+    public function choose_bank_store(Request $request, PackageBooking $packageBooking)
+    {
+        $data = $request->validate([
+            'bankname' => 'required',
+        ]);
+        $packageBooking->update([
+            'packagebanksfk' => $data['bankname'],
+        ]);
+        dd($packageBooking);
+        // return redirect()->route('book.payment', $packageBooking->id);
     }
 }

@@ -35,16 +35,16 @@ class PackageBooking extends Model
 
     public function customer()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'usersfk');
     }
 
     public function tour()
     {
-        return $this->belongsTo(PackageTour::class);
+        return $this->belongsTo(PackageTour::class, 'packagetoursfk');
     }
 
     public function bank()
     {
-        return $this->belongsTo(packageBank::class);
+        return $this->belongsTo(packageBank::class, 'packagebanksfk');
     }
 }
