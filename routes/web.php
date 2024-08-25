@@ -32,8 +32,16 @@ Route::middleware('auth')->group(function () {
     Route::get('book/payment/{packageBooking}/save', [FrontController::class, 'book_payment'])->name('book.payment');
     Route::patch('book/payment/{packageBooking}/save', [FrontController::class, 'book_payment_store'])->name('book.payment.store');
 
-    Route::patch('book-finish', [FrontController::class, 'book_finish'])->name('book.finish');
+    Route::get('book-finish', [FrontController::class, 'book_finish'])->name('book.finish');
     });
+    Route::prefix('dashboard')->name('dashboard.')->group(function(){
+        Route::middleware('can:view orders')->group(function(){
+            Route::get('my-orders', [FrontController::class, 'my_bookings'])->name('bookings');
+            Route::get('my-orders/details/{packagebooking}', [FrontController::class, 'my_bookings'])->name('booking.details');
+        });
+    });
+
+
     Route::prefix('admin')->name('admin.')->group(function(){
         Route::middleware('can:manage categories')->group(function(){
             Route::resource('categories', CategoryController::class);
