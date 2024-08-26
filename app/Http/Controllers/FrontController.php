@@ -115,4 +115,12 @@ class FrontController extends Controller
         $bookings = PackageBooking::where('usersfk', Auth::user()->id)->orderByDesc('id')->paginate('10');
         return view('frontend.schedule', compact('bookings'));
     }
+    public function my_bookings_details(PackageBooking $packagebooking)
+    {
+        if($packagebooking->usersfk != Auth::user()->id){
+            Alert::error('Error', 'You are not authorized to access this page');
+            abbort(403, 'You are not authorized to access this page');
+        }
+        return view('frontend.schedule_details', compact('packagebooking'));
+    }
 }

@@ -20,7 +20,7 @@
           <p class="font-semibold">My Packages</p>
           @forelse ($bookings as $item)
 
-          <a href="trip-details.html" class="card">
+          <a href="{{ route('dashboard.booking.details',$item->id) }}" class="card">
             <div class="bg-white p-4 rounded-[26px] flex items-center gap-4">
             <p class="text-center text-sm leading-[22px] tracking-035"><span class="font-semibold text-2xl">{{ \Carbon\Carbon::parse($item->startdate)->format('d') }}</span> <br> {{ \Carbon\Carbon::parse($item->startdate)->format('M') }} <br> {{ \Carbon\Carbon::parse($item->startdate)->format('Y') }}</p>
               <div class="flex items-center gap-4">
@@ -40,7 +40,6 @@
                         </div>
                     @endif
                 </div>
-                </div>
               </div>
             </div>
           </a>
@@ -50,7 +49,7 @@
 
         </div>
         <div class="navigation-bar fixed bottom-0 z-50 max-w-[640px] w-full h-[85px] bg-white rounded-t-[25px] flex items-center justify-evenly py-[45px]">
-          <a href="home.html" class="menu opacity-25">
+          <a href="{{ route('home') }}" class="menu opacity-25">
             <div class="flex flex-col justify-center w-fit gap-1">
               <div class="w-4 h-4 flex shrink-0 overflow-hidden mx-auto text-[#4D73FF]">
                 <img src="{{ asset('assets/icons/home.svg') }}" alt="icon">
@@ -66,7 +65,7 @@
               <p class="font-semibold text-xs leading-[20px] tracking-[0.35px]">Search</p>
             </div>
           </a>
-          <a href="" class="menu">
+          <a href="{{ route('dashboard.bookings') }}" class="menu">
             <div class="flex flex-col justify-center w-fit gap-1">
               <div class="w-4 h-4 flex shrink-0 overflow-hidden mx-auto text-[#4D73FF]">
                 <img src="{{ asset('assets/icons/calendar-blue.svg') }}" alt="icon">
@@ -74,7 +73,7 @@
               <p class="font-semibold text-xs leading-[20px] tracking-[0.35px]">Schedule</p>
             </div>
           </a>
-          <a href="" class="menu opacity-25">
+          <a href="{{ route('profile.edit') }}" class="menu opacity-25">
             <div class="flex flex-col justify-center w-fit gap-1">
               <div class="w-4 h-4 flex shrink-0 overflow-hidden mx-auto text-[#4D73FF]">
                 <img src="{{ asset('assets/icons/user-flat.svg') }}" alt="icon">

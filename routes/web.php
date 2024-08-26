@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('dashboard')->name('dashboard.')->group(function(){
         Route::middleware('can:view orders')->group(function(){
             Route::get('my-orders', [FrontController::class, 'my_bookings'])->name('bookings');
-            Route::get('my-orders/details/{packagebooking}', [FrontController::class, 'my_bookings'])->name('booking.details');
+            Route::get('my-orders/details/{packagebooking}', [FrontController::class, 'my_bookings_details'])->name('booking.details');
         });
     });
 

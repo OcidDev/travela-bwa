@@ -18,11 +18,11 @@
                 </div>
 
                 @role('customer')
-                {{-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard.bookings')" :active="request()->routeIs('dashboard.bookings')">
                         {{ __('My Bookings') }}
                     </x-nav-link>
-                </div> --}}
+                </div>
                 @endrole
 
                 @role('super_admin')
